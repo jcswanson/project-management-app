@@ -16,7 +16,7 @@ import javax.persistence.ManyToMany;
 public class Employee {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//use AUTO if not using SQL file
 	private long employeeId;
 	
 	private String firstName;

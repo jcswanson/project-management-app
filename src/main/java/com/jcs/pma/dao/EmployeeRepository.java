@@ -9,5 +9,5 @@ import com.jcs.pma.entities.Employee;
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
 	@Override
-	List<Employee> findAll();
+	public List<Employee> findAll();
 }
