@@ -17,8 +17,13 @@ import com.jcs.pma.entities.Employee;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	@Autowired
+	
 	EmployeeRepository empRepo;
+	
+	// Constructor Injection! Can Replaced Autowired Field Injection
+	public EmployeeController(EmployeeRepository empRepo) {
+		this.empRepo = empRepo;
+	}
 	
 	@GetMapping
 	public String displayEmployees(Model model) {

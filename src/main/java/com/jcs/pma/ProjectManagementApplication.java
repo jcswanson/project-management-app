@@ -1,31 +1,62 @@
 package com.jcs.pma;
 
-import java.util.Arrays;
+/*import javax.activation.DataSource;*/
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import com.jcs.pma.dao.EmployeeRepository;
 import com.jcs.pma.dao.ProjectRepository;
-import com.jcs.pma.entities.Employee;
-import com.jcs.pma.entities.Project;
+import com.jcs.pma.springbean.Car;
+import com.jcs.pma.springbean.Doors;
+import com.jcs.pma.springbean.Engine;
+import com.jcs.pma.springbean.Tires;
 
-@SpringBootApplication
+/*
+ * ScanBasePackages used to have Spring scan packages that aren't a child of 
+ * the parent main package. Must include the main package too.
+*/
+@SpringBootApplication //(scanBasePackages= {"com.jcs.pma", "com.jcs.utils"})
 public class ProjectManagementApplication {
 
-	
-	  @Autowired ProjectRepository proRepo;
+	  // Autowired known as a Field Injection
+	  @Autowired 
+	  ProjectRepository proRepo;
 	  
-	  @Autowired EmployeeRepository empRepo;
+	  @Autowired 
+	  EmployeeRepository empRepo;
 	 
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectManagementApplication.class, args);
-	}
+	}	
 
+
+	// Setting the filename for the SQL Scripts
+	@Bean
+	public DataSourceInitializer dataSourceInitializer(DataSource ds) {
+	    ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+	    resourceDatabasePopulator.addScript(new ClassPathResource("/schema.sql"));
+
+	    DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
+	    dataSourceInitializer.setDataSource(ds);
+	    dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
+	    return dataSourceInitializer;
+	}
+	@Bean
+	public Car newCar() {
+		Engine e = new Engine();
+		Doors d = new Doors();
+		Tires t = new Tires();
+		return new Car(e, d, t);
+	}
+	
 	/*
 	 * @Bean CommandLineRunner runner() { return args -> { Employee emp1 = new
 	 * Employee("John", "Warton", "warton@gmail.com"); Employee emp2 = new
