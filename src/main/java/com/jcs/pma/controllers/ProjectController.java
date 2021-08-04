@@ -22,8 +22,14 @@ public class ProjectController {
 	@Autowired
 	ProjectRepository proRepo;
 	
-	@Autowired
+	
 	EmployeeRepository empRepo;
+	
+	//Setter Injection
+	@Autowired
+	public void setEmpRepo(EmployeeRepository empRepo) {
+		this.empRepo = empRepo;
+	}
 	
 	@GetMapping  // this GETs the classes RequestMapping("/projects") URI
 	public String displayProjects(Model model) {
@@ -32,6 +38,10 @@ public class ProjectController {
 		return "projects/list-projects";
 	}
 	
+	
+
+	
+
 	@GetMapping("/new") //replaces @RequestMapping(value="/new", method=RequestMethod.GET)
 	public String displayProjectForm(Model model) { 
 		
@@ -51,12 +61,15 @@ public class ProjectController {
 		proRepo.save(project);
 		
 		/*
-		 * Used for OneToMany Relationship w/ @RequestParam List<Long> employees,
+		 * *Used for OneToMany Relationship w/ @RequestParam List<Long> employees*
 		 * Iterable<Employee> chosenEmployees = empRepo.findAllById(employees);
 		 * 
-		 * for(Employee emp : chosenEmployees) { emp.setProject(project); // setting
-		 * relationship in the db using the foreign key empRepo.save(emp); // save each
-		 * employee's status as well }
+		 * for(Employee emp : chosenEmployees) {
+		 *  // setting relationship in the db using the foreign key
+		 *  	emp.setProject(project); 
+		 *  // save each employee's status as well
+		 *  	empRepo.save(emp); 
+		 *  }
 		 */
 		// use a redirect to prevent duplicate submissions
 		return "redirect:/projects";	

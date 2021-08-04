@@ -12,18 +12,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Project {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="project_generator")
+	@SequenceGenerator(name="project_generator",sequenceName="project_seq", allocationSize=1)
 	private long projectId;
 	
 	private String name;
-	
 	private String stage;  //NOT_STARTED, COMPLETED, INPROGRESS
-	
 	private String description;
 	
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
@@ -82,8 +82,9 @@ public class Project {
 	
 	// convenience method
 	public void addEmployee(Employee employee) {
-		if(this.employees==null)
+		if(this.employees==null) {
 			employees = new ArrayList<>();
+		}
 		this.employees.add(employee);
 	}
 	
